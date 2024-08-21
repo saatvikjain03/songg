@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('neon.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#quiz-container {
+    opacity: 95%;
+    background-color: rgba(40, 3, 49, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    height: 500px;
+    width: 600px;
+    text-align: center;
+}
+#question{
+    color:white;
+    font-weight: bolder;
+    font-size: larger;
+    
+}
+h1 {
+    font-weight: bolder;
+    margin-top:50px;
+    margin-bottom: 20px;
+    color: #377affb9;
+}
+
+#options {
+    margin-bottom: 20px;
+}
+
+button {
+    font-weight: bolder;
+    font-size: large;
+    margin-top: 50px;
+    margin-inline: 10px;
+    padding: 10px 20px;
+    background-color: #a407aa;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #365bde;
+}
+
+#feedback {
+    color: #fff;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+#score {
+    color: #fff;
+    margin-top: 20px;
+}
+
+</style>
+<body>
+
+    <div id="quiz-container">
+        <h1>Quiz</h1>
+        <div id="question-container">
+            <p id="question">Questions here.....</p>
+            <div id="options">
+                
+            </div>
+        </div>
+        <button id="submit-btn">Submit Answer</button>
+        <p id="feedback"></p>
+        <p id="score"></p>
+    </div>
+
+    
+</body>
+<script>
+const quizData = [
+    {
+        question: "how many seconds are there in a minute?",
+        options: ["4", "8", "3", "60"],
+        correctAnswer: "60"
+    },
+    {
+        question: "how many consonents are there in english alphabets?",
+        options: ["3", "4", "21", "6"],
+        correctAnswer: "21"
+    },
+    {
+        question: "how many sides are there in a triangle?",
+        options: ["3", "8", "5", "6"],
+        correctAnswer: "3"
+    },
+    {
+        question: "largest plane of solar system?",
+        options: ["Earth", "Mars", "Saturn", "Jupiter"],
+        correctAnswer: "Jupiter"
+    },
+    {
+        question: "how many states are there in india?",
+        options: ["3", "4", "28", "6"],
+        correctAnswer: "28"
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+
+
+function loadQuestion() {
+    const questionContainer = document.getElementById('question');
+    const optionsContainer = document.getElementById('options');
+    const currentQuestion = quizData[currentQuestionIndex];
+    
+    questionContainer.textContent = currentQuestion.question;
+    optionsContainer.innerHTML = '';
+
+    currentQuestion.options.forEach(option => {
+        const button = document.createElement('button');
+        button.textContent = option;
+        button.addEventListener('click', () => selectOption(option));
+        optionsContainer.appendChild(button);
+    });
+}
+
+function selectOption(selectedOption) {
+    const feedback = document.getElementById('feedback');
+    const currentQuestion = quizData[currentQuestionIndex];
+
+    if (selectedOption === currentQuestion.correctAnswer) {
+        feedback.textContent = "Correct!";
+        score++;
+    } else {
+        feedback.textContent = "Wrong!";
+    }
+
+    document.getElementById('score').textContent = `Score: ${score}/${quizData.length}`;
+
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < quizData.length) {
+        setTimeout(loadQuestion, 2000); 
+    } else {
+        setTimeout(showFinalScore, 1000);
+    }
+}
+
+
+function showFinalScore() {
+    const quizContainer = document.getElementById('quiz-container');
+    quizContainer.innerHTML = `<h1>Your final score is ${score}/${quizData.length}</h1>`;
+}
+
+
+loadQuestion();
+</script>
+</html>
